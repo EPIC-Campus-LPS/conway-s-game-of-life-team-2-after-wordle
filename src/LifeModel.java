@@ -129,7 +129,28 @@ public class LifeModel implements ActionListener
      */
     public void oneGeneration()
     {
-    	
+        for(int r = 0; r < 60; r++){
+            for(int c = 0; c < 60; c++){
+                int nbrs = numLiveNeighbors(r,c);
+                if(myGrid[r][c].isAliveNow()){
+                    if(nbrs == 2 || nbrs == 3){
+                        myGrid[r][c].setAliveNext(true);
+                    }
+                    else {
+                        myGrid[r][c].setAliveNext(false);
+                    }
+                }
+                else{
+                    if(nbrs == 3){
+                        myGrid[r][c].setAliveNext(true);
+                    }
+                    else {
+                        myGrid[r][c].setAliveNext(false);
+                    }
+                }
+            }
+        }
+        updateNextGen();
     } 
     
     /**
@@ -139,8 +160,19 @@ public class LifeModel implements ActionListener
      * use for each loops
      */
     private void updateNextGen() {
-
+        for(int r = 0; r < 60; r++){
+            for(int c = 0; c < 60; c++){
+                if(myGrid[r][c].isAliveNext()) {
+                    myGrid[r][c].setAliveNow(true);
+                    myGrid[r][c].setAliveNext(false);
+                }
+                else{
+                    myGrid[r][c].setAliveNow(false);
+                }
+            }
+        }
     }
+}
      
     /**
      * Helper method for oneGeneration
@@ -154,7 +186,15 @@ public class LifeModel implements ActionListener
      */
     private int numLiveNeighbors (int row, int col)
     {
-       return 0;
+        int neighbors = 0;
+       for(int r = -1; r <= 1; r++){
+           for(int c = -1; c <= 1; c ++){
+               if(myGrid[row+r][col+c].isAliveNow()){
+                   neighbors++;
+               }
+           }
+       }
+       return neighbors;
     }
     
     /**
@@ -167,7 +207,12 @@ public class LifeModel implements ActionListener
      */
     private boolean inBounds(int row, int col)
     {
-        return false;
+        if(row < 0 || row > 60 || col < 0 || col > 60){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 }
 
