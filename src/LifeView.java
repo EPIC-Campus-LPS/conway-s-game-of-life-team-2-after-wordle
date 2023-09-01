@@ -46,9 +46,10 @@ public class LifeView extends JPanel {
         for (int r = 0; r < SIZE; r++) {
             for (int c = 0; c < SIZE; c++) {
                 if (myGrid[r][c] != null) {
+                    Color crimson = new Color(212,0,01);
                     if (myGrid[r][c].isAliveNow())// live cells blue
-                        g.setColor(Color.blue);
-                    else g.setColor(new Color(235, 235, 255)); // dead cells gray
+                        g.setColor(crimson);
+                    else g.setColor(Color.darkGray); // dead cells gray
 
                     g.fillRect((c + 1) * boxSize, (r + 1) * boxSize, boxSize - 2, boxSize - 2);// draw a cell
                 }

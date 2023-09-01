@@ -38,7 +38,8 @@ public class Life extends JFrame implements ActionListener {
 
         // build the view
         view = new LifeView();
-        view.setBackground(Color.white);
+        Color purple = new Color(130,0,220);
+        view.setBackground(purple);
 
         // put buttons, view together
         Container c = getContentPane();
@@ -47,6 +48,8 @@ public class Life extends JFrame implements ActionListener {
 
         // build the model
         model = new LifeModel(view);
+
+
     }
 
     /**
