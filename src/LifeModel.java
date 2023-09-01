@@ -41,9 +41,9 @@ public class LifeModel implements ActionListener
                 myGrid[r][c] = new LifeCell();
 
       
-        try
+        /**try
         {
-        	File reader = new File("life100.txt");
+        	File reader = new File("100life.txt");
         	Scanner infile = new Scanner(reader);
         	int numInitialCells = infile.nextInt();
             for (int count=0; count<numInitialCells; count++)
@@ -56,6 +56,7 @@ public class LifeModel implements ActionListener
         }
         catch (IOException e)
         {
+         */
         	// use random population
         	System.out.println("using a random setup");
                                                        
@@ -63,7 +64,7 @@ public class LifeModel implements ActionListener
                     for ( LifeCell cell: row)
                         if ( Math.random() > 0.85)
                             cell.setAliveNow(true);
-        }
+        //}
         myView = view; //set the view
         myView.updateView(myGrid); //draw the grid
     }
@@ -127,13 +128,13 @@ public class LifeModel implements ActionListener
      * 
      * This method calls NumLiveNeighbors(), updateNextGen()
      */
-    public void oneGeneration()
+    public void oneGeneration() //EX: first generation
     {
-        for(int r = 0; r < 60; r++){
-            for(int c = 0; c < 60; c++){
-                int nbrs = numLiveNeighbors(r,c);
-                if(myGrid[r][c].isAliveNow()){
-                    if(nbrs == 2 || nbrs == 3){
+        for(int r = 0; r < 60; r++){ // EX: row 5
+            for(int c = 0; c < 60; c++){ // EX: column 0
+                int neighbors = numLiveNeighbors(r,c); //input 5,0
+                if(myGrid[r][c].isAliveNow() == true){
+                    if(neighbors == 2 || neighbors == 3){
                         myGrid[r][c].setAliveNext(true);
                     }
                     else {
@@ -141,7 +142,7 @@ public class LifeModel implements ActionListener
                     }
                 }
                 else{
-                    if(nbrs == 3){
+                    if(neighbors == 3){
                         myGrid[r][c].setAliveNext(true);
                     }
                     else {
@@ -168,11 +169,12 @@ public class LifeModel implements ActionListener
                 }
                 else{
                     myGrid[r][c].setAliveNow(false);
+                    myGrid[r][c].setAliveNext(false);
                 }
             }
         }
     }
-}
+
      
     /**
      * Helper method for oneGeneration
@@ -184,19 +186,29 @@ public class LifeModel implements ActionListener
      * 
      * This method calls inBounds()
      */
-    private int numLiveNeighbors (int row, int col)
+    private int numLiveNeighbors (int row, int col) // input 5, 0
     {
         int neighbors = 0;
        for(int r = -1; r <= 1; r++){
-           for(int c = -1; c <= 1; c ++){
-               if(myGrid[row+r][col+c].isAliveNow()){
-                   neighbors++;
+           for(int c = -1; c <= 1; c++){
+               if(r == 0 && c == 0){
+                   continue;
+               }
+               if(inBounds(row+r,col+c) == true){
+                   if(myGrid[row+r][col+c].isAliveNow()){
+
+                       neighbors++;
+                   }
                }
            }
        }
        return neighbors;
     }
-    
+    /**
+     * r -1., c -1. fails inBounds because col+c = 0-1 = -1, and -1<0
+     * r -1, c 0. grid[4][0] is not alive now,
+     */
+
     /**
      * Helper method for numLiveNeighbors
      * Given a cell row and col checks to see if 
@@ -207,7 +219,7 @@ public class LifeModel implements ActionListener
      */
     private boolean inBounds(int row, int col)
     {
-        if(row < 0 || row > 60 || col < 0 || col > 60){
+        if(row < 0 || row > 59 || col < 0 || col > 59){
             return false;
         }
         else{
